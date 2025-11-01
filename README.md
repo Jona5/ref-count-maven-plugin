@@ -1,6 +1,10 @@
-# ref-count Maven Plugin
+# Reference Counting Maven Plugin
 
 This Maven plugin analyzes your project's bytecode to count the number of references to classes from its declared dependencies. This helps identify which dependencies are actively used and how frequently.
+
+## Requirements
+
+- **Java 17+**: This plugin is built for Java 17. You must run Maven using a JDK of version 17 or higher.
 
 ## How to Use
 

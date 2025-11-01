@@ -14,8 +14,8 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <maven.compiler.source>25</maven.compiler.source>
-        <maven.compiler.target>25</maven.compiler.target>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
         <maven.version>3.9.11</maven.version>
         <asm.version>9.9</asm.version>
     </properties>
@@ -114,6 +114,7 @@
                             </dependency>
                         </dependencies>
                         <configuration>
+                            <jvmArguments>--enable-native-access=ALL-UNNAMED --add-opens=java.base/sun.misc=ALL-UNNAMED</jvmArguments>
                             <debug>true</debug>
                             <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
                             <pomIncludes>
