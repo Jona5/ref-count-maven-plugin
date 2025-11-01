@@ -81,12 +81,16 @@ A GitHub Actions workflow is set up in `.github/workflows/build.yml`. It automat
 
 ## Releasing
 
-To perform a release, use the `maven-release-plugin`.
+This project uses the `central-publishing-maven-plugin` to release to Maven Central.
 
-First, ensure your working directory is clean (no uncommitted changes). Then, run the following command to prepare the release:
+To perform a release:
+
+1.  **Set up your credentials**: Make sure you have a server entry in your `~/.m2/settings.xml` with the ID `central` and your Sonatype credentials.
+2.  **Set up GPG**: You need a GPG key to sign the artifacts. The `maven-gpg-plugin` will use it automatically during the build.
+3.  **Run the deployment**: Execute the following command. It will build, test, sign, and deploy the artifacts to Maven Central.
 
 ```bash
-mvn release:prepare
+mvn clean deploy
 ```
 
 This will create a release tag in your Git repository.
