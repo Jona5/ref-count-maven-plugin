@@ -19,7 +19,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.jar.JarFile;
 
@@ -36,10 +35,10 @@ public class ReferenceCounterMojo extends AbstractMojo {
     private MavenProject project;
 
     // Map<Class name (org/foo/Bar), Artifact (commons-lang3.jar)>
-    private final Map<String, Artifact> classToArtifactMap = new HashMap<>();
+    final Map<String, Artifact> classToArtifactMap = new HashMap<>();
 
     // Map<Artifact (commons-lang3.jar), Counter>
-    private final Map<Artifact, Integer> usageCounts = new ConcurrentHashMap<>();
+    final Map<Artifact, Integer> usageCounts = new ConcurrentHashMap<>();
 
     @Override
     public void execute() throws MojoExecutionException {
@@ -68,7 +67,7 @@ public class ReferenceCounterMojo extends AbstractMojo {
     /**
      * Builds a map that maps classes to their source JARs.
      */
-    private void buildClassToArtifactMap() throws IOException {
+    void buildClassToArtifactMap() throws IOException {
         getLog().info("Analyzing dependencies...");
         var artifacts = project.getArtifacts();
 
@@ -95,7 +94,7 @@ public class ReferenceCounterMojo extends AbstractMojo {
     /**
      * Goes through the 'target/classes' directory and analyzes each .class file.
      */
-    private void analyzeProjectClasses() throws IOException {
+    void analyzeProjectClasses() throws IOException {
         var classesDir = new File(project.getBuild().getOutputDirectory()).toPath();
         if (!Files.exists(classesDir)) {
             getLog().warn("No 'target/classes' directory found. Did you run 'mvn compile'?");
@@ -110,7 +109,7 @@ public class ReferenceCounterMojo extends AbstractMojo {
     /**
      * Uses ASM to analyze a single .class file.
      */
-    private void analyzeClassFile(Path classFile) {
+    void analyzeClassFile(Path classFile) {
         try (var is = Files.newInputStream(classFile)) {
             var reader = new ClassReader(is);
             // We pass our maps to the visitor so it can increment the counters
@@ -124,7 +123,7 @@ public class ReferenceCounterMojo extends AbstractMojo {
     /**
      * Prints the counted references to the console.
      */
-    private void printResults() {
+    void printResults() {
         getLog().info("--- Reference Analysis Results ---");
         usageCounts.entrySet().stream().filter(entry -> entry.getValue() > 0) // Only show used libs
                 .sorted(Map.Entry.<Artifact, Integer>comparingByValue().reversed()) // Sort by usage
@@ -142,7 +141,7 @@ public class ReferenceCounterMojo extends AbstractMojo {
      * This visitor is the entry point for a class.
      * It delegates the analysis of method bodies to the MethodVisitor.
      */
-    private static class ReferenceClassVisitor extends ClassVisitor {
+    static class ReferenceClassVisitor extends ClassVisitor {
         private final Map<String, Artifact> classMap;
         private final Map<Artifact, Integer> counts;
 
@@ -166,7 +165,7 @@ public class ReferenceCounterMojo extends AbstractMojo {
     /**
      * This visitor looks at the *content* of a method (the bytecode).
      */
-    private static class ReferenceMethodVisitor extends MethodVisitor {
+    static class ReferenceMethodVisitor extends MethodVisitor {
         private final Map<String, Artifact> classMap;
         private final Map<Artifact, Integer> counts;
 
@@ -209,7 +208,7 @@ public class ReferenceCounterMojo extends AbstractMojo {
          * The core logic: Checks if a class belongs to a dependency
          * and increments the counter.
          */
-        private void countReference(String internalClassName) {
+        void countReference(String internalClassName) {
             // Ignore/simplify arrays (e.g. [Ljava/lang/String;)
             if (internalClassName == null || internalClassName.startsWith("[")) {
                 return;

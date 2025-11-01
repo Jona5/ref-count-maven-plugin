@@ -52,6 +52,18 @@ To build the plugin from source, clone the repository and run:
 mvn clean install
 ```
 
+## Testing
+
+This project uses the `maven-invoker-plugin` to run integration tests. The tests are located in the `src/it` directory.
+
+To run the integration tests, execute the following command:
+
+```bash
+mvn install -Prun-its
+```
+
+This command activates the `run-its` profile, which builds the plugin, runs it against a sample project, and verifies the output.
+
 ## CI
 
 A GitHub Actions workflow is set up in `.github/workflows/build.yml`. It automatically builds and tests the project on every push and pull request to the `main` branch.
