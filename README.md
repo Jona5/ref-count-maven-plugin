@@ -23,9 +23,9 @@ To use the plugin, add it to the `<build>` section of your `pom.xml`:
 
 ```xml
 <plugin>
-    <groupId>de.refcount</groupId>
-    <artifactId>ref-count</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <groupId>io.github.jona5</groupId>
+    <artifactId>ref-count-maven-plugin</artifactId>
+    <version>1.2</version> <!-- Ersetze mit der aktuellen Version -->
 </plugin>
 ```
 
