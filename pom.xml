@@ -101,12 +101,18 @@
         <profile>
             <id>run-its</id>
             <build>
-
                 <plugins>
                     <plugin>
                         <groupId>org.apache.maven.plugins</groupId>
                         <artifactId>maven-invoker-plugin</artifactId>
-                        <version>1.7</version>
+                        <version>3.6.0</version>
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.codehaus.groovy</groupId>
+                                <artifactId>groovy</artifactId>
+                                <version>3.0.21</version>
+                            </dependency>
+                        </dependencies>
                         <configuration>
                             <debug>true</debug>
                             <cloneProjectsTo>${project.build.directory}/it</cloneProjectsTo>
@@ -118,7 +124,7 @@
                             <settingsFile>src/it/settings.xml</settingsFile>
                             <goals>
                                 <goal>clean</goal>
-                                <goal>test-compile</goal>
+                                <goal>verify</goal>
                             </goals>
                         </configuration>
                         <executions>
@@ -133,7 +139,6 @@
                         </executions>
                     </plugin>
                 </plugins>
-
             </build>
         </profile>
     </profiles>
