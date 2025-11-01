@@ -79,6 +79,24 @@ This command activates the `run-its` profile, which builds the plugin, runs it a
 
 A GitHub Actions workflow is set up in `.github/workflows/build.yml`. It automatically builds and tests the project on every push and pull request to the `main` branch.
 
+## Releasing
+
+To perform a release, use the `maven-release-plugin`.
+
+First, ensure your working directory is clean (no uncommitted changes). Then, run the following command to prepare the release:
+
+```bash
+mvn release:prepare
+```
+
+This will create a release tag in your Git repository.
+
+Next, run the following command to build and deploy the release artifacts:
+
+```bash
+mvn release:perform
+```
+
 ## License
 
 This project is licensed under the terms of the LICENSE file.
