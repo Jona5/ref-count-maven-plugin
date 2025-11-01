@@ -1,4 +1,4 @@
-package de.spam;
+package de.ref;
 
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.DefaultArtifact;
@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class ReferenceCounterMojoTest {
 
     private Map<Artifact, Integer> usageCounts;
-    private ReferenceCounterMojo.ReferenceMethodVisitor methodVisitor;
+    private ReferenceMethodVisitor methodVisitor;
 
     private Artifact commonsLangArtifact;
     private Artifact guavaArtifact;
@@ -37,7 +37,7 @@ class ReferenceCounterMojoTest {
         usageCounts.put(guavaArtifact, 0);
 
         // 2. Instantiate the class under test (the visitor)
-        methodVisitor = new ReferenceCounterMojo.ReferenceMethodVisitor(null, classToArtifactMap, usageCounts);
+        methodVisitor = new ReferenceMethodVisitor(null, classToArtifactMap, usageCounts);
     }
 
     @Test
