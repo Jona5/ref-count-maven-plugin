@@ -151,6 +151,4 @@ public class ReferenceCounterMojo extends AbstractMojo {
                 });
         getLog().info("-------------------------------------");
     }
-
-    // --- INNER CLASSES FOR ASM ANALYSIS ---
 }
