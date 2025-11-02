@@ -3,7 +3,7 @@
 
     <groupId>io.github.jona5</groupId>
     <artifactId>ref-count-maven-plugin</artifactId>
-    <version>1.3-SNAPSHOT</version>
+    <version>1.3</version>
     <packaging>maven-plugin</packaging>
     <name>Reference Count Maven Plugin</name>
     <description>A Maven plugin that analyzes your project's bytecode to count the number of references to classes from its declared dependencies. This helps identify which dependencies are actively used and how frequently.</description>
@@ -23,7 +23,7 @@
         <connection>scm:git:git://github.com/Jona5/ref-count-maven-plugin.git</connection>
         <developerConnection>scm:git:git@github.com:Jona5/ref-count-maven-plugin.git</developerConnection>
         <url>https://github.com/Jona5/ref-count-maven-plugin</url>
-        <tag>HEAD</tag>
+        <tag>ref-count-maven-plugin-1.3</tag>
     </scm>
 
     <developers>
