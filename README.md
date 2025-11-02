@@ -79,28 +79,6 @@ This command activates the `run-its` profile, which builds the plugin, runs it a
 
 A GitHub Actions workflow is set up in `.github/workflows/build.yml`. It automatically builds and tests the project on every push and pull request to the `main` branch.
 
-## Releasing
-
-This project uses the `central-publishing-maven-plugin` to release to Maven Central.
-
-To perform a release:
-
-1.  **Set up your credentials**: Make sure you have a server entry in your `~/.m2/settings.xml` with the ID `central` and your Sonatype credentials.
-2.  **Set up GPG**: You need a GPG key to sign the artifacts. The `maven-gpg-plugin` will use it automatically during the build.
-3.  **Run the deployment**: Execute the following command. It will build, test, sign, and deploy the artifacts to Maven Central.
-
-```bash
-mvn clean deploy
-```
-
-This will create a release tag in your Git repository.
-
-Next, run the following command to build and deploy the release artifacts:
-
-```bash
-mvn release:perform
-```
-
 ## License
 
 This project is licensed under the terms of the LICENSE file.
