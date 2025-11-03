@@ -1,5 +1,7 @@
 # Reference Counting Maven Plugin
 
+**[Project Website](https://jona5.github.io/ref-count-maven-plugin/)**
+
 This Maven plugin analyzes your project's bytecode to count the number of references to classes from its declared dependencies. This helps identify which dependencies are actively used and how frequently.
 
 ## Motivation
