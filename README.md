@@ -70,7 +70,7 @@ This project uses the `maven-invoker-plugin` to run integration tests. The tests
 To run the integration tests, execute the following command:
 
 ```bash
-mvn clean verify -Dgpg.skip=true
+mvn clean verify
 ```
 
 This command activates the `run-its` profile, which builds the plugin, runs it against a sample project, and verifies the output.
