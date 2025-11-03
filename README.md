@@ -25,7 +25,7 @@ To use the plugin, add it to the `<build>` section of your `pom.xml`:
 <plugin>
     <groupId>io.github.jona5</groupId>
     <artifactId>ref-count-maven-plugin</artifactId>
-    <version>1.2</version>
+    <version>{{project.version}}</version>
 </plugin>
 ```
 
@@ -35,7 +35,7 @@ Then, run the plugin from your terminal:
 mvn ref-count:count-references
 ```
 
-The plugin will run during the `verify` phase and print a summary of the dependency usage to the console.
+The plugin will run and print a summary of the dependency usage to the console.
 
 ### Sample Output
 
