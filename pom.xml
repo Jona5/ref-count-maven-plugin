@@ -184,14 +184,6 @@
                     </execution>
                 </executions>
             </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-release-plugin</artifactId>
-                <version>3.0.1</version>
-                <configuration>
-                    <releaseProfiles>release</releaseProfiles>
-                </configuration>
-            </plugin>
         </plugins>
     </build>
     <profiles>
@@ -219,7 +211,7 @@
                         <version>1.5.3</version>
                         <executions>
                             <execution>
-                                <phase>prepare</phase>
+                                <phase>verify</phase>
                                 <goals>
                                     <goal>replace</goal>
                                 </goals>
