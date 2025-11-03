@@ -22,8 +22,16 @@
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 replay_pid*
-=======
+
+# Maven
 target/
+
+# Maven Release Plugin
+release.properties
+pom.xml.releaseBackup
+pom.xml.branch
+pom.xml.tag
+
 !.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**/target/
 !**/src/test/**/target/
