@@ -15,8 +15,7 @@
         </license>
     </licenses>
 
-    <!-- FIXME change it to the project's website -->
-    <url>http://maven.apache.org</url>
+    <url>https://jona5.github.io/ref-count-maven-plugin</url>
 
     <!-- SCM: Source Control Management for maven-release-plugin -->
     <scm>
@@ -184,8 +183,27 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-site-plugin</artifactId>
+                <version>3.12.1</version>
+            </plugin>
         </plugins>
     </build>
+    <reporting>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-project-info-reports-plugin</artifactId>
+                <version>3.5.0</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-plugin-plugin</artifactId>
+                <version>3.15.2</version>
+            </plugin>
+        </plugins>
+    </reporting>
     <profiles>
         <profile>
             <id>release</id>
