@@ -45,6 +45,7 @@ pom.xml.tag
 *.iws
 *.iml
 *.ipr
+.idea
 
 ### Eclipse ###
 .apt_generated
