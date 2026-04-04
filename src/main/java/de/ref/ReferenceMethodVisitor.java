@@ -1,6 +1,7 @@
 package de.ref;
 
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.plugin.logging.Log;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
 
@@ -13,11 +14,13 @@ import java.util.Map;
 class ReferenceMethodVisitor extends MethodVisitor {
     private final Map<String, Artifact> classMap;
     private final Map<Artifact, Integer> counts;
+    private final Log log;
 
-    ReferenceMethodVisitor(MethodVisitor mv, Map<String, Artifact> classMap, Map<Artifact, Integer> counts) {
+    ReferenceMethodVisitor(MethodVisitor mv, Map<String, Artifact> classMap, Map<Artifact, Integer> counts, Log log) {
         super(Opcodes.ASM9, mv);
         this.classMap = classMap;
         this.counts = counts;
+        this.log = log;
     }
 
     /**
@@ -63,6 +66,9 @@ class ReferenceMethodVisitor extends MethodVisitor {
         if (artifact != null) {
             // Atomically increment the counter
             counts.compute(artifact, (key, value) -> (value == null) ? 1 : value + 1);
+            if (log.isDebugEnabled()) {
+                log.debug("    Found reference to dependency class: " + internalClassName + " (from " + artifact.getArtifactId() + ")");
+            }
         }
     }
 }

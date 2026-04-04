@@ -1,6 +1,7 @@
 package de.ref;
 
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.plugin.logging.Log;
 import org.objectweb.asm.ClassVisitor;
 import org.objectweb.asm.MethodVisitor;
 import org.objectweb.asm.Opcodes;
@@ -17,21 +18,25 @@ import java.util.Map;
 class ReferenceClassVisitor extends ClassVisitor {
     private final Map<String, Artifact> classMap;
     private final Map<Artifact, Integer> counts;
+    private final Log log;
 
-    ReferenceClassVisitor(Map<String, Artifact> classMap, Map<Artifact, Integer> counts) {
+    ReferenceClassVisitor(Map<String, Artifact> classMap, Map<Artifact, Integer> counts, Log log) {
         super(Opcodes.ASM9);
         this.classMap = classMap;
         this.counts = counts;
+        this.log = log;
     }
 
     @Override
     public MethodVisitor visitMethod(int access, String name, String descriptor, String signature, String[] exceptions) {
         var mv = super.visitMethod(access, name, descriptor, signature, exceptions);
+        if (log.isDebugEnabled()) {
+            log.debug("  Analyzing method: " + name + descriptor);
+        }
         // Each method gets its own visitor
-        return new ReferenceMethodVisitor(mv, classMap, counts);
+        return new ReferenceMethodVisitor(mv, classMap, counts, log);
     }
 
     // Fields, superclasses, etc. could also be analyzed here,
     // but the MethodVisitor catches most of it.
 }
-

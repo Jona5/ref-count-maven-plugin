@@ -87,6 +87,9 @@ public class ReferenceCounterMojo extends AbstractMojo {
         for (var artifact : artifacts) {
             File jarFile = artifact.getFile();
             if (jarFile != null && jarFile.exists() && !jarFile.isDirectory()) {
+                if (getLog().isDebugEnabled()) {
+                    getLog().debug("Indexing dependency: " + artifact.getArtifactId());
+                }
                 try (var jar = new JarFile(jarFile)) {
                     var entries = jar.entries();
                     while (entries.hasMoreElements()) {
@@ -94,6 +97,9 @@ public class ReferenceCounterMojo extends AbstractMojo {
                         if (entry.getName().endsWith(".class")) {
                             String className = entry.getName().replace(".class", "").replace(File.separatorChar, '/');
                             classToArtifactMap.put(className, artifact);
+                            if (getLog().isDebugEnabled()) {
+                                getLog().debug("  Mapped class: " + className + " -> " + artifact.getArtifactId());
+                            }
                         }
                     }
                 }
@@ -126,9 +132,12 @@ public class ReferenceCounterMojo extends AbstractMojo {
      * @param classFile The path to the class file to analyze.
      */
     void analyzeClassFile(Path classFile) {
+        if (getLog().isDebugEnabled()) {
+            getLog().debug("Analyzing project class file: " + classFile);
+        }
         try (var is = Files.newInputStream(classFile)) {
             var reader = new ClassReader(is);
-            var visitor = new ReferenceClassVisitor(classToArtifactMap, usageCounts);
+            var visitor = new ReferenceClassVisitor(classToArtifactMap, usageCounts, getLog());
             reader.accept(visitor, ClassReader.SKIP_DEBUG | ClassReader.SKIP_FRAMES);
         } catch (IOException e) {
             getLog().warn("Could not read class file: " + classFile, e);
