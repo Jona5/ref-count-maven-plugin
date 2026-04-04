@@ -3,6 +3,7 @@ package de.ref;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.artifact.DefaultArtifact;
 import org.apache.maven.artifact.handler.DefaultArtifactHandler;
+import org.apache.maven.plugin.logging.SystemStreamLog;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -37,7 +38,7 @@ class ReferenceCounterMojoTest {
         usageCounts.put(guavaArtifact, 0);
 
         // 2. Instantiate the class under test (the visitor)
-        methodVisitor = new ReferenceMethodVisitor(null, classToArtifactMap, usageCounts);
+        methodVisitor = new ReferenceMethodVisitor(null, classToArtifactMap, usageCounts, new SystemStreamLog());
     }
 
     @Test
