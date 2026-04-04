@@ -39,7 +39,7 @@
         <asm.version>9.9</asm.version>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
-        <maven.version>3.9.13</maven.version>
+        <maven.version>3.9.14</maven.version>
         <asm.version>9.9.1</asm.version>
         <junit.version>6.0.1</junit.version>
     </properties>
