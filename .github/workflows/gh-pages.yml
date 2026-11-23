@@ -1,9 +1,7 @@
 name: Publish GitHub Pages
 
 on:
-  push:
-    branches:
-      - main
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -23,7 +21,7 @@ jobs:
           cache: maven
 
       - name: Build site
-        run: mvn -B site
+        run: ./mvnw -B site -Dproject.build.outputTimestamp="$(git log -1 --format=%cI)"
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4
