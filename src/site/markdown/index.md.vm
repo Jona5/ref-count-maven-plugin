@@ -1,0 +1,48 @@
+# Welcome to the Reference Count Maven Plugin
+
+The **Reference Count Maven Plugin** analyzes your project's compiled bytecode to measure how heavily each dependency is actually used—providing not just binary *used vs. unused* results, but reference counts, **surface area** (distinct dependency classes used), **blast radius** (referencing project classes), and **JAR size**.
+
+## Motivation
+
+Over time, Maven projects accumulate dependencies that were added for a single utility method or replaced by newer libraries without ever being removed. While tools like `mvn dependency:analyze` identify completely unused dependencies, they don't reveal *how lightly* a dependency is used or how expensive it is to keep.
+
+This plugin helps teams:
+
+- **Spot high-cost / low-usage refactoring candidates** (e.g., a 3 MB library used by only 1 project class).
+- **Detect undeclared transitive dependencies** referenced directly by project code.
+- **Prevent dependency creep during migrations** using a version-agnostic **baseline ratchet** (`ref-count-baseline.json`).
+- **Share dependency insights in CI** via JSON, CSV, or GitHub-Flavored Markdown reports (including `$GITHUB_STEP_SUMMARY`).
+- **Aggregate usage across multi-module reactors** via `ref-count:aggregate`.
+
+## Key Features
+
+- **Deep Bytecode Analysis (ASM)**: Counts method calls, field accesses, type instructions, arrays, inheritance/interfaces, field and method signatures, **generic type arguments**, **annotations**, `try/catch` exceptions, class literals, lambdas, and method references.
+- **Multi-Release JAR & Reactor Support**: Handles Multi-Release JARs (`META-INF/versions/<N>/`) and sibling reactor directories cleanly.
+- **Split-Package Detection**: Warns when identical class names appear in multiple dependencies.
+- **Fast & Lightweight**: Analyzes `.class` files in parallel with zero extra runtime dependencies beyond ASM.
+
+## Quick Start
+
+Try it immediately on any Maven project without editing `pom.xml`:
+
+```bash
+mvn compile io.github.jona5:ref-count-maven-plugin:${project.version}:count-references
+```
+
+Or add it to your `pom.xml`:
+
+```xml
+<plugin>
+    <groupId>io.github.jona5</groupId>
+    <artifactId>ref-count-maven-plugin</artifactId>
+    <version>${project.version}</version>
+</plugin>
+```
+
+Then run:
+
+```bash
+mvn compile ref-count:count-references
+```
+
+For configuration recipes, CI integration, and the complete parameter reference, see the [Usage](usage.html) and [Goals](plugin-info.html) pages.

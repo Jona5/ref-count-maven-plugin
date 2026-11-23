@@ -1,0 +1,128 @@
+# Usage & Configuration
+
+## Goals
+
+| Goal | Description | Full Reference |
+|---|---|---|
+| `ref-count:count-references` | Analyzes a single project module's compiled bytecode against its dependencies. | [count-references](count-references-mojo.html) |
+| `ref-count:aggregate` | Aggregates dependency reference statistics across all non-`pom` modules in a multi-module reactor. | [aggregate](aggregate-mojo.html) |
+| `ref-count:help` | Displays help and parameter details on the command line (`-Ddetail=true`). | [help](help-mojo.html) |
+
+## Zero-Config CLI Execution
+
+To try the plugin on any Maven project without modifying its `pom.xml`:
+
+```bash
+mvn compile io.github.jona5:ref-count-maven-plugin:${project.version}:count-references
+```
+
+To also inspect test classes and `test`-scoped dependencies, run `test-compile` first:
+
+```bash
+mvn test-compile io.github.jona5:ref-count-maven-plugin:${project.version}:count-references \
+  -Drefcount.includeTestClasses=true
+```
+
+## Configuring in `pom.xml`
+
+Add the plugin to `<build><plugins>` and optionally bind it to the `verify` lifecycle phase:
+
+```xml
+<plugin>
+    <groupId>io.github.jona5</groupId>
+    <artifactId>ref-count-maven-plugin</artifactId>
+    <version>${project.version}</version>
+    <configuration>
+        <showUnused>true</showUnused>
+        <includeTransitive>true</includeTransitive>
+        <lowUsageThreshold>3</lowUsageThreshold>
+        <excludes>
+            <exclude>org.slf4j:*</exclude>
+        </excludes>
+    </configuration>
+    <executions>
+        <execution>
+            <id>count-refs</id>
+            <phase>verify</phase>
+            <goals>
+                <goal>count-references</goal>
+            </goals>
+        </execution>
+    </executions>
+</plugin>
+```
+
+## Reading the Output
+
+```text
+[INFO] --- Reference Analysis Results ---
+[INFO]   org.apache.commons:commons-lang3:3.12.0 -> 42 references [direct, 574 KB, 4 dep classes in 12 project classes]
+[INFO]   com.google.guava:guava:33.0-jre -> 2 references [direct, 3.0 MB, 1 dep class in 1 project class, low usage]
+[INFO]       com.example.App -> com.google.common.collect.Lists
+[INFO]   org.example:transitive-lib:2.1.0 -> 3 references [transitive - undeclared!, 92 KB, 1 dep class in 2 project classes]
+[INFO]   org.example:unused-lib:1.0.0 -> 0 references [direct, 48 KB]
+[INFO] -------------------------------------
+```
+
+- **Reference count**: Total bytecode references found across method calls, field accesses, type instructions, arrays, inheritance, generic signatures, annotations, `try/catch` blocks, class literals, lambdas, and method references.
+- **`direct` vs. `transitive - undeclared!`**: Distinguishes directly declared dependencies from transitive dependencies your code references directly.
+- **`X dep classes in Y project classes`**: Shows *surface area* (how many classes of the dependency are used) and *blast radius* (how many project classes rely on it).
+- **`low usage`**: Automatically flags lightly used dependencies (`0 < references <= lowUsageThreshold`) and prints the exact class-to-class mapping.
+
+## Multi-Module Aggregation
+
+Run `ref-count:aggregate` from the root of a multi-module project after compiling all modules:
+
+```bash
+mvn compile ref-count:aggregate
+```
+
+The report consolidates reference counts across all reactor modules and reports how many modules depend on each artifact.
+
+## Exporting Reports (JSON, CSV, Markdown)
+
+Set `outputFormat` to `json`, `csv`, or `markdown` (`md`). By default, reports are written to `target/ref-count-report.{json,csv,md}` while still logging the console summary:
+
+```bash
+mvn compile ref-count:count-references -Drefcount.outputFormat=json
+mvn compile ref-count:count-references -Drefcount.outputFormat=csv
+```
+
+### GitHub Actions Step Summary
+
+Write a Markdown table directly to the GitHub Actions job summary:
+
+```yaml
+- name: Dependency Reference Count
+  run: |
+    ./mvnw -B compile ref-count:count-references \
+      -Drefcount.outputFormat=markdown \
+      -Drefcount.outputFile="$GITHUB_STEP_SUMMARY" \
+      -Drefcount.lowUsageThreshold=3
+```
+
+## Migration Ratchet (Baseline Mode)
+
+When migrating away from a dependency over multiple pull requests, freeze the current reference count in a baseline file:
+
+```bash
+mvn compile ref-count:count-references -Drefcount.updateBaseline=true
+```
+
+This writes a sorted, version-agnostic `ref-count-baseline.json` (keyed by `groupId:artifactId`, so dependency version updates do not break the baseline). You can either track all dependencies or keep only the libraries being migrated:
+
+```json
+{
+  "com.google.guava:guava": 15
+}
+```
+
+Enforce the baseline in CI:
+
+```bash
+mvn compile ref-count:count-references -Drefcount.baselineFile=ref-count-baseline.json
+```
+
+If any tracked dependency's reference count increases above the baseline, the build fails (configurable via `failOnIncrease=false` to warn only). Improvements are logged automatically.
+
+For the complete list of parameters, defaults, and Maven properties, see the auto-generated [count-references](count-references-mojo.html) and [aggregate](aggregate-mojo.html) goal documentation.
