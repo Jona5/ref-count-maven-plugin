@@ -3,7 +3,7 @@
 
     <groupId>io.github.jona5</groupId>
     <artifactId>ref-count-maven-plugin</artifactId>
-    <version>1.5.3</version>
+    <version>1.6.0</version>
     <packaging>maven-plugin</packaging>
     <name>Reference Count Maven Plugin</name>
     <description>A Maven plugin that analyzes your project's bytecode (including generics, annotations, lambdas, method references, inheritance, and fields) to measure dependency reference counts, blast radius, surface area, and JAR size—with JSON/CSV/Markdown exports, multi-module aggregation, and baseline migration ratchets.</description>

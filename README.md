@@ -16,7 +16,7 @@ Run the plugin directly from the command line on any compiled Maven project:
 
 <!-- x-release-please-start-version -->
 ```bash
-mvn compile io.github.jona5:ref-count-maven-plugin:1.5.3:count-references
+mvn compile io.github.jona5:ref-count-maven-plugin:1.6.0:count-references
 ```
 <!-- x-release-please-end -->
 
@@ -29,7 +29,7 @@ Add the plugin to the `<build><plugins>` section of your `pom.xml`:
 <plugin>
     <groupId>io.github.jona5</groupId>
     <artifactId>ref-count-maven-plugin</artifactId>
-    <version>1.5.3</version>
+    <version>1.6.0</version>
 </plugin>
 ```
 <!-- x-release-please-end -->
@@ -48,7 +48,7 @@ To run automatically during `mvn verify` (e.g. in CI with `failOnUnused` or `bas
 <plugin>
     <groupId>io.github.jona5</groupId>
     <artifactId>ref-count-maven-plugin</artifactId>
-    <version>1.5.3</version>
+    <version>1.6.0</version>
     <executions>
         <execution>
             <goals>
